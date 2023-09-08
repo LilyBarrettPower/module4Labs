@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artists cards</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #e3f2fd;
+        }
+        .card {
+            padding: 10px;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 3em;
+            padding: 0 0 10px 0;
+        }
+        img {
+            height: 100px;
+            width: 100px;
+        }
+
+       
+    </style>
+</head>
+<body>
+    <template id="card-template">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title"></div>
+                <div class="card-image"></div> 
+                <!-- added a div for the image in the url  -->
+            </div>
+        </div>
+    </template>
+    <div id="portfolio-list"></div>
+    <!-- Changed the name of the div  -->
+    <script>
+ const artists = [
+        {
+            name: "Picasso",
+            portfolio: [
+                { title: "Weeping Woman", url: "https://upload.wikimedia.org/wikipedia/en/1/14/Picasso_The_Weeping_Woman_Tate_identifier_T05010_10.jpg" },
+                { title: "Old Guitarist", url: "https://upload.wikimedia.org/wikipedia/en/thumb/b/bc/Old_guitarist_chicago.jpg/800px-Old_guitarist_chicago.jpg" },
+            ]
+        },
+        {
+            name: "Rembrandt",
+            portfolio: [
+                { title: "Storm on the Sea of Galilee", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Rembrandt_Christ_in_the_Storm_on_the_Lake_of_Galilee.jpg/800px-Rembrandt_Christ_in_the_Storm_on_the_Lake_of_Galilee.jpg" },
+                { title: "Abduction of Europa", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Rembrandt_Harmensz._van_Rijn_-_The_Abduction_of_Europa_-_Google_Art_Project.jpg/1280px-Rembrandt_Harmensz._van_Rijn_-_The_Abduction_of_Europa_-_Google_Art_Project.jpg" },
+            ]
+        },
+        {
+            name:"Van Gogh",
+            portfolio: [
+                {title: "Portrait", url: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/436532/1671316/main-image"},
+                {title: "Sky", url: "https://mymodernmet.com/wp/wp-content/uploads/2020/11/White-house-night-van-goh-worldwide-2.jpg" },
+            ]
+        }
+    ]
+
+    function addCards(artist) { // added the artists parameter so we can add more artists 
+        const template = document.getElementById("card-template").content.cloneNode(true); // clone the template 
+        const container = template.querySelector('.card');
+        
+
+        template.querySelector('.card-title').innerText = `Artist: ${artist.name}`;
+
+        artist.portfolio.forEach((item) => { // iterate the artists portfolio 
+            const image = document.createElement('img'); // create an image element for each portfolio 
+            image.src = item.url; // source is the url
+            image.alt = item.title; // alt text is the title of the art work 
+            template.querySelector('.card-image').appendChild(image); // images are appended to the card-image html element 
+            });
+
+            document.querySelector('#portfolio-list').appendChild(container);
+            //filled in template is appended to the portfolio-list html element 
+    }
+
+    artists.forEach((artist) => {
+        addCards(artist); // iterate through the artists array - calls the addCards function for each artist 
+    });
+    </script>
+</body>
+</html>
