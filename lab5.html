@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    <!-- Link the bootstrap css -->
+    <title>News Page</title>
+</head>
+
+<body>
+    <h1 class="heading text-center mt-4">Current news!</h1>
+    <div class="container mt-5">
+        <div id="news-container" class="row">
+            <!-- News articles will go here -->
+        </div>
+        <div class="mt-4">
+            <input type="text" id="news-title" class="form-control col-sm-12 col-md-6 col-lg-3" placeholder="Enter news title">
+            <!-- create the text input field for the news title -->
+            <textarea id="news-content" class="form-control mt-2 col-sm-12 col-md-6 col-lg-3" placeholder="Enter news content"></textarea>
+            <!-- Create the input field for the news content -->
+            <button id="add-news" class="btn btn-secondary mt-2 col-sm-12 col-md-6 col-lg-3">Add News</button>
+            <!-- Create the add news button to add the new news article -->
+        </div>
+    </div>
+
+    <!-- Card template -->
+    <div id="news-card-template" style="display: none;"> 
+        <!-- display: none so that the JS code can clone the template for each news article and populate it -->
+        <div class="col-md-8 col-lg-10 col-sm-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to populate and update news -->
+    <script>
+        // Maximum number of news items to keep
+        const maxNewsItems = 5; 
+
+        // Original news array
+        let news = [
+            { id: 1, title: 'Election Results', content: "Newly elected minister..." },
+            { id: 2, title: 'Sporting Success', content: "World Cup winners..." },
+            { id: 3, title: 'Tornado Warning', content: "Residents should prepare..." }
+        ];
+
+        // Function to populate news articles
+        function populateNews() {
+            const newsContainer = document.getElementById('news-container'); 
+            newsContainer.innerHTML = '';
+
+            // Keep most recent news items (up to maxNewsItems)
+            const recentNews = news.slice(-maxNewsItems);
+
+            recentNews.forEach(article => {
+                const cardTemplate = document.getElementById('news-card-template').cloneNode(true); //clone the template
+                cardTemplate.style.display = 'block'; // Show the template
+
+                cardTemplate.querySelector('.card-title').textContent = article.title;
+                cardTemplate.querySelector('.card-text').textContent = article.content;
+
+                newsContainer.appendChild(cardTemplate);
+            });
+        }
+
+        // Function to add news item
+        document.getElementById('add-news').addEventListener('click', function () {
+            const newsTitle = document.getElementById('news-title').value; // using the input fields id's as above 
+            const newsContent = document.getElementById('news-content').value;
+            const newNewsItem = {
+                id: news.length + 1, 
+                title: newsTitle,
+                content: newsContent,
+            };
+
+            // Add the new news item to the beginning of the array
+            news.unshift(newNewsItem);
+
+            // Check if the number of news items exceeds the maximum
+            if (news.length > maxNewsItems) {
+                // Remove the oldest news item
+                news.pop();
+            }
+
+            populateNews();
+            // Clear input fields
+            document.getElementById('news-title').value = '';
+            document.getElementById('news-content').value = '';
+        });
+
+        // Initial population of news
+        populateNews();
+
+        // Set interval to update news every 5 seconds (5000 milliseconds)
+        setInterval(populateNews, 5000);
+    </script>
+</body>
+
+</html>
