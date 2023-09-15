@@ -1,0 +1,123 @@
+<html>
+<head>
+    <title>Moment DateTime Format</title>
+    <!-- reference Moment.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.36/moment-timezone-with-data.min.js"></script>
+    <!-- Include the moment timezone library for question 5  -->
+</head>
+
+<body> 
+    <!-- Question 1:  -->
+    <h2>Difference between birthday and current date</h2>
+    <div id="birthday"></div>
+    <div id="displayDifference"></div>
+
+    <script type="text/javascript">
+        (function () {
+            let birthdayMoment = moment('2000-04-14'); // create variable with my birthday
+ 
+            let currentDate = moment(); // create the current date
+            let differenceInDays = currentDate.diff(birthdayMoment, 'days'); // Using .diff to display the difference in days .toNow displays in years 
+            let displayDifference = document.getElementById('displayDifference');
+            displayDifference.innerHTML = `The difference in days is ${differenceInDays}`; // display this in the displayDifference div
+        })();
+    </script>
+    <!-- Question 2:  -->
+    <h2>Number of months, days and years between the current date and your birthday</h2>
+    <div id="birthday2"></div>
+    <div id="displayDifference2"></div>
+
+    <script>
+        (function () {
+            let birthdayMoment2 = moment('2000-4-14'); // create birthday moment
+
+            let current = moment(); // create current moment
+            let duration = moment.duration(current.diff(birthdayMoment2)); // Create duration object to extract days, months and years
+
+            let years = duration.years(); 
+            let months = duration.months();
+            let days = duration.days();
+            //Create variables that store the duration (difference) in years, months and days
+
+            let displayDifference2 = document.getElementById('displayDifference2');
+            displayDifference2.innerHTML = `${years} years, ${months} months and ${days} days`; // display this in the displayDifference2 div 
+        })();
+    </script>
+
+    <!-- Question 3:  -->
+    <h2>Display the date closest to the current date</h2>
+    <div id="date1"></div>
+    <div id="date2"></div>
+    <div id="closestDate"></div> 
+    <!-- Divs to populate the display with dates  -->
+
+    <script type="text/javascript">
+        (function () {
+            let date1 = moment('1970-05-11'); // create the variable with the first date to be compared 
+            let date2 = moment('1970-07-10'); // create the variable with tyhe second date to be compared 
+
+            let currentDate = moment(); // create the current date to do the comparing 
+ 
+            let difference1 = Math.abs(currentDate.diff(date1, 'days')); // get the difference between the dates and the current date in days 
+            let difference2 = Math.abs(currentDate.diff(date2, 'days'));
+
+            let closestDate = (difference1 < difference2) ? date1 : date2 // conditional statement - if difference one is smaller than 
+            // difference two then closestDate = date1, otherwise closest date = date2 
+
+            let displayDate1 = document.getElementById('date1').innerHTML = `Date one is ${date1.format('YYYY-MM-DD')}`; // display date one 
+            let displayDate2 = document.getElementById('date2').innerHTML = `Date two is ${date2.format('YYYY-MM-DD')}`; // display date two
+            let displayClosestDate = document.getElementById('closestDate').innerHTML = `Closest date to current is ${closestDate.format('YYYY-MM-DD')}`;
+            // display the date closest to the current date 
+        })();
+    </script>
+
+    <!-- Question 4  -->
+    <h1>Given two dates, display whether the first date is before or after the second date</h1>
+        <div id="date3"></div>
+        <div id="date4"></div>
+        <div id="comparisonResult"></div>
+        <!-- Create divs to display the data -->
+
+        <script type="text/javascript">
+            (function () {
+                let date3 = moment('2000-06-05');
+                let date4 = moment('1976-09-11');
+                //Create the dates to be compared 
+
+                let comparisonResult;
+                //Created an empty variable to house the comparison result
+
+                if(date3.isBefore(date4)) { // use momentJS .isBefore to compare the dates 
+                    comparisonResult = 'Date one is before date two';
+                } else if (date3.isAfter(date4)) { // use momentJS .isAfter to compare the dates
+                    comparisonResult = 'Date two is before date one';
+                } else { // if no date is before or after the other then they must be equal
+                    comparisonResult = 'Date one is equal to date two';
+                }
+                let displayDate3 = document.getElementById('date3');
+                displayDate3.innerHTML = `Date one is: ${date3.format('dddd, MMMM Do YYYY')}`; // display date one 
+                let displayDate4 = document.getElementById('date4');
+                displayDate4.innerHTML = `Date two is: ${date4.format('dddd, MMMM Do YYYY')}`; // display date two
+                let displayComparisonDate = document.getElementById('comparisonResult') 
+                displayComparisonDate.innerHTML = comparisonResult; // display the comparsion result
+            })();
+
+        </script>
+        <!-- Question 5:  -->
+        <h1>Display the current time in london</h1>
+        <div id="londonTime"></div> 
+        <!-- create div ti display the data -->
+
+        <script type="text/javascript">
+            (function () {
+                let londonTime = moment().tz('Europe/London').format('YYYY-MM-DD HH:mm:ss'); // use tz (from momenttimezone library linked in script tag)
+                //to get the london timezone. 
+                //use .format to say the format you want the date to be in
+
+                let displayLondonTime = document.getElementById('londonTime');
+                displayLondonTime.innerHTML = `Current time in London is: ${londonTime}`;
+                // display the date and time in London currently 
+            })();
+        </script>
+</body>

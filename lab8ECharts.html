@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCharts</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <!-- Prepare a DOM with a defined width and height for ECharts -->
+    <div id="main" style="width: 900px;height:600px;"></div>
+    <script type="text/javascript">
+        // Specify the configuration items and data for the chart
+
+            let myChart = echarts.init(document.getElementById('main')); // initialise the echart based on the prepared DOM
+            let options; // create an empty options variable so it can be used outside the fetch block 
+
+        fetch('https://fakestoreapi.com/products')
+            .then((response) => response.json()) // fetch the API data 
+            .then((json) => {
+
+                let categoryCount = {}; // create an object to store the number of items in each category
+                json.forEach((product) => {
+                    let category = product.category; // loop through the API data to count the number of items in each category
+                    if(!categoryCount[category]) { // if the category is not already present, start it at one 
+                        categoryCount[category] = 1;
+                    } else {
+                        categoryCount[category]++; // if the category is already present, increment the count by 1 
+                    } 
+                });
+
+                let categories = Object.keys(categoryCount); // get category names from the API data
+                let itemCounts = Object.values(categoryCount); // get category item counts from the API data 
+
+                    options = { // configure the items and data for the chart
+                    title: { text: 'Fake Store Categories' },
+                    xAxis: {
+                        data: categories, // x axis labels are the categories extracted from the API data
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: 'Sales',
+                        type: 'bar',
+                        data: itemCounts, // y axis labels are the item counts extracted from the API data 
+                    }]
+                };
+                // Display the chart with the API data
+                myChart.setOption(options);
+           });
+    </script>
+</body>
+</html>
