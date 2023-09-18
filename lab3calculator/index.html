@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <div class="banner">
+        <h1>Calculator application</h1>
+        <p>Input two numbers into the input field's <br>
+            Choose your operator using the dropdown field <br>
+            Press the equals sign to see the answer <br>
+            Reset the application to go again</p>
+    </div>
+    <!-- Create the banner  -->
+
+    <div class="inputfields">
+        <label class="label" for="input1"></label>
+        <input type="number" id="input1" placeholder="First number...">
+        <label class="label" for="input2"></label>
+        <input type="number" id="input2" placeholder="Second number...">
+    </div>
+    <!-- Create input fields to input numbers, id's so I can select with JS -->
+    <!-- Leaving labels blank - not sure if i can just omit them then? -->
+
+    <div class="dropdown">
+        <label for="operator">Choose your operator: </label>
+        <select name="operator" id="operator">
+            <option value="addition"> + </option>
+            <option value="subtraction"> - </option>
+            <option value="multiplication"> * </option>
+            <option value="division"> / </option>
+        </select>
+    </div>
+    </div>
+    <!-- Create a dropdown selection for the operators  -->
+
+    <div class="button1">
+        <button id="equals" type="submit">
+            <img src="equalSign.png" alt="Submit">
+        </button>
+    </div>
+    <!-- Create an equal button. Turned the image of an equals sign into the button -->
+
+    <div class="results">
+        <h2>Your result is: </h2>
+        <p id="result">...</p>
+    </div>
+    <!-- area for the results to display -->
+
+    <div class="button2">
+        <button id="reset">Reset</button>
+    </div>
+    <!-- created a reset button -->
+</body>
+
+</html>

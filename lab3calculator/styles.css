@@ -1,0 +1,58 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.banner {
+
+    text-align: center;
+}
+
+
+h1 {
+    font-weight: bold;
+    font-size: 3em;
+}
+
+p {
+    font-size: 1em;
+}
+
+.inputfields {
+    text-align: center;
+    border: 20px;
+    margin: 100px;
+}
+
+.dropdown {
+    text-align: center;
+}
+
+.results {
+    text-align: center;
+    position: relative;
+    top: 50px;
+}
+
+.button1 {
+    position: relative;
+    top: 25px;
+    text-align: center;
+
+}
+
+.button2 {
+    position: relative;
+    top: 100px;
+    text-align: center;
+}
+
+
+img {
+    height: 20px;
+    width: 20px;
+}
+
+#equals {
+    border-color: white;
+    background-color: white;
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+        <!-- Add the font awesome library  -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+        <h1 class="text-center">Fake Store</h1>
+
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <select id="categorySelect" class="form-select"> 
+                        <!-- Using bootdtap form-select class  -->
+                        <option value="" selected>Show all categories</option> 
+                        <!-- Categories will be added here by the JS script -->
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search for items...">
+                    <!-- Add the html structure for the search input. using bootstrap form-control -->
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="card-container"></div>
+        <!-- This is where I will append the card data (json data). where cards will be displayed -->
+        
+        <template id="cardTemplate">
+            <div class="col-sm-12 col-md-6 col-lg-3 my-3">
+                <div class="card h-100">
+                    <div class="card-icon">
+                        <!-- create div to house the icon -->
+                        <i class="fa-solid fa-shop"></i> 
+                        <!-- Placeholder icon -->
+                    </div>
+                    <img class="card-image" alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title">placeholder</h5>
+                        <p class="card-text">placeholder</p>
+                        <p class="card-price">placeholder</p>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <script type="text/javascript">
+            function populateCategoryDrop(data) { // Function to populate the category selection dropdown with unique dropdowns 
+                const categorySelect = document.getElementById('categorySelect');
+                const categories = new Set(); //Using a Set to store the unique actegories 
+
+                data.forEach((item) => {
+                    categories.add(item.category); 
+                });
+
+                categories.forEach((category) => {
+                    const option = document.createElement('option'); // add each category as an option in the dropdown
+                    option.value = category;
+                    option.textContent = category;
+                    categorySelect.appendChild(option); // append the new unique categories into the selection dropdown box 
+                });
+            }
+
+                function getIconClassCategory(category) {
+                    switch(category.toLowerCase()) {
+                        case "electronics" :
+                            return "fa-solid fa-laptop";
+                        case "men's clothing" :
+                            return "fa-solid fa-shirt";
+                        case "women's clothing":
+                            return "fa-solid fa-person-dress";
+                        case "jewelery" :
+                            return "fa-solid fa-ring";
+                        default:
+                            return "fa-solid fa-shop";
+                    }
+                }
+
+            document.addEventListener('DOMContentLoaded', function() { // ensures the js code is runs after the DOM is fully loaded 
+            fetch('https://fakestoreapi.com/products')
+                .then((response) => { // promise
+                    if (!response.ok) {
+                        throw new Error('fetch unsuccessful'); // throw an error if unsuccessful
+                    }
+                    return response.json(); // if successesful, return the json data
+                })
+                .then((data) => { // promise
+                    const cardContainer = document.getElementById("card-container"); // store DOM element card-container in cardContainer
+                    const cardTemplate = document.getElementById('cardTemplate'); 
+
+                    populateCategoryDrop(data); // call the populateCategoryDrop function 
+
+                    function filterProductCategories(category, searchKeyword) { // filter products based on the selection dropdown category AND the searchKeyword
+                        cardContainer.innerHTML = ""; // clear any existing cards 
+
+                        data.forEach((item) => { // iterate through json data
+                            if((!category || item.category === category) && (!searchKeyword || item.title.toLowerCase().includes(searchKeyword.toLowerCase()))){
+                                // If no category is selected, OR if the product category matches the selected category, this condition is met 
+                                // If no search keyword is inputted, OR if the product containes the keyword (case insenstive)
+                        const cardClone = cardTemplate.content.cloneNode(true); // clone the template for each json item
+                        const title = cardClone.querySelector(".card-title").textContent = item.title; // put the json file title as teh title of the card
+                        const text = cardClone.querySelector(".card-text").textContent = item.description; 
+                        const price = cardClone.querySelector(".card-price").textContent = `$${item.price}`; // put the json price as the card-price 
+                        const image = cardClone.querySelector(".card-image").src = item.image; // put the json image as the card-image
+                          // images are appended to the card-image html element  // put the json file body as the text of the card
+                        const iconElement = cardClone.querySelector(".card-icon i");
+                        iconElement.className = getIconClassCategory(item.category);
+
+                        cardContainer.appendChild(cardClone) // add a new card for each json item
+                        }
+                });
+            }
+            const categorySelect = document.getElementById('categorySelect'); 
+            const searchInput = document.getElementById('searchInput'); 
+
+            categorySelect.addEventListener("change", function () { // create an event listener for the selection drop down box 
+                const selectedCategory = categorySelect.value;
+                const searchKeyword = searchInput.value; // output is updated based on the category selected and any keywords selected 
+                filterProductCategories(selectedCategory, searchKeyword); // filterProductCategories is called on event listener
+                // products that match the selection dropdown and search keywowrd will be displayed 
+                 });
+
+                 searchInput.addEventListener("input", function () { // create an event listener for the search bar 
+                     const selectedCategory = categorySelect.value;
+                     const searchKeyword = searchInput.value;
+                     filterProductCategories(selectedCategory, searchKeyword); // event listener will get the selected category and search keyword 
+                     // will display these products when the search is entered 
+                 });
+
+                    filterProductCategories(null); // To insure all products are displayed prior to a selection being made 
+                     })
+                .catch((error) => {
+                    console.error(error); // error handling 
+                });
+            });
+        </script>
+</body>
