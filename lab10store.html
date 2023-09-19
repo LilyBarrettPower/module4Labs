@@ -7,12 +7,29 @@
     <title>Fake store</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <!-- add bootstrap -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
         <!-- Add the font awesome library  -->
     <link rel="stylesheet" href="styles.css">
+    <!-- custom CSS -->
 </head>
 <body>
         <h1 class="text-center">Fake Store</h1>
+
+        <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- using bootstrap classes to construct the navbar -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="lab10store.html">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="lab10chart.html">Chart</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- created a navbar to display the charts page and home page for navigation  -->
 
         <div class="container mt-3">
             <div class="row">
@@ -52,14 +69,14 @@
         </template>
 
         <script type="text/javascript">
+            // Creating the selection dropdown:
             function populateCategoryDrop(data) { // Function to populate the category selection dropdown with unique dropdowns 
                 const categorySelect = document.getElementById('categorySelect');
                 const categories = new Set(); //Using a Set to store the unique actegories 
 
                 data.forEach((item) => {
-                    categories.add(item.category); 
+                    categories.add(item.category); //iterate over the array, extract the category of each item and add to the categories set (only unique categories)
                 });
-
                 categories.forEach((category) => {
                     const option = document.createElement('option'); // add each category as an option in the dropdown
                     option.value = category;
@@ -67,7 +84,7 @@
                     categorySelect.appendChild(option); // append the new unique categories into the selection dropdown box 
                 });
             }
-
+                // Adding icons to each item in a category using switch statement:
                 function getIconClassCategory(category) {
                     switch(category.toLowerCase()) {
                         case "electronics" :
@@ -106,12 +123,12 @@
                                 // If no search keyword is inputted, OR if the product containes the keyword (case insenstive)
                         const cardClone = cardTemplate.content.cloneNode(true); // clone the template for each json item
                         const title = cardClone.querySelector(".card-title").textContent = item.title; // put the json file title as teh title of the card
-                        const text = cardClone.querySelector(".card-text").textContent = item.description; 
+                        const text = cardClone.querySelector(".card-text").textContent = item.description; //put the json file description as the card text
                         const price = cardClone.querySelector(".card-price").textContent = `$${item.price}`; // put the json price as the card-price 
                         const image = cardClone.querySelector(".card-image").src = item.image; // put the json image as the card-image
-                          // images are appended to the card-image html element  // put the json file body as the text of the card
+                          // images are appended to the card-image html element  
                         const iconElement = cardClone.querySelector(".card-icon i");
-                        iconElement.className = getIconClassCategory(item.category);
+                        iconElement.className = getIconClassCategory(item.category); // call the getIconClassCategory function 
 
                         cardContainer.appendChild(cardClone) // add a new card for each json item
                         }
@@ -134,8 +151,8 @@
                      // will display these products when the search is entered 
                  });
 
-                    filterProductCategories(null); // To insure all products are displayed prior to a selection being made 
-                     })
+                    filterProductCategories(null); // To insure all products are displayed before a selection is made 
+                })
                 .catch((error) => {
                     console.error(error); // error handling 
                 });

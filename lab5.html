@@ -28,7 +28,8 @@
     <!-- Card template -->
     <div id="news-card-template" style="display: none;"> 
         <!-- display: none so that the JS code can clone the template for each news article and populate it -->
-        <div class="col-md-8 col-lg-10 col-sm-12 mb-4">
+        <div class="col-md-8 col-lg-10 col-sm-12 mb-4"> 
+            <!-- Make the card sizes responsive -->
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"></h5>
@@ -73,7 +74,7 @@
         document.getElementById('add-news').addEventListener('click', function () {
             const newsTitle = document.getElementById('news-title').value; // using the input fields id's as above 
             const newsContent = document.getElementById('news-content').value;
-            const newNewsItem = {
+            const newNewsItem = { // create the new news item
                 id: news.length + 1, 
                 title: newsTitle,
                 content: newsContent,
@@ -84,7 +85,7 @@
 
             // Check if the number of news items exceeds the maximum
             if (news.length > maxNewsItems) {
-                // Remove the oldest news item
+                // Remove the oldest news item if 
                 news.pop();
             }
 

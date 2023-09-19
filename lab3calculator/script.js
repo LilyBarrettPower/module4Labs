@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 break;
             case "division":
                 if (input2 === 0) {
-                    result = "Cannot divide by 0";
+                    result = "Cannot divide by 0"; // error will occur if you try to divide by 0
                 } else {
                     result = input1 / input2;
                 }

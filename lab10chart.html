@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+            <!-- include bootstrap -->
+            <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script> 
+            <!-- Include the echarts CDN -->
+    <title>Echart for fake store</title>
+</head>
+<body>
+    <h1 class="text-center">Average item prices by category</h1>
+            <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="lab10store.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="lab10chart.html">Chart</a>
+                        </li>
+                        <!-- Include the navbar in the html so you can relocate back to home page -->
+                    </ul>
+                </div>
+            </nav>
+        <!-- Prepare a DOM with a defined width and height for ECharts -->
+        <div id="main" style="width: 900px;height:600px;"></div>
+        <script type="text/javascript">
+
+            let myChart = echarts.init(document.getElementById('main')); // initialise the echart based on the prepared DOM
+            let options; // create an empty options variable so it can be used outside the fetch block 
+
+            fetch('https://fakestoreapi.com/products')
+                .then((response) => response.json()) // fetch the API data 
+                .then((data) => {
+
+                    const categoryPrices = {};  //Object used to store prices by their categories 
+                    data.forEach((item) => { // iterate through the data from the API
+                        const category = item.category;  // variable for the category 
+                        const price = item.price // variable for the price 
+
+                        if (!categoryPrices[category]) {  // if the category doesn't exist as a key in the object then initialise an empty array for that category 
+                            categoryPrices[category] = [];
+                        }
+                        categoryPrices[category].push(price); // push the price of the current item associated with its category into categoryPrices object
+                    });
+
+                    const categories = Object.keys(categoryPrices);  // extract category names for each categoryPrices
+                    let averagePrices = categories.map((category) => { // create an array of objects which conatins the category and its average price 
+                        const prices = categoryPrices[category];
+                        const average = prices.reduce((sum, price) => sum + price, 0) / prices.length; // calculate the averge price of each category
+                        return { // reduce returns the accumulated result 
+                            category,
+                            average, // return the category and the average price 
+                        };
+                    })
+                    options = { // configure the items and data for the chart
+                        title: { text: 'Average item prices by category' },
+                        xAxis: {
+                            data: categories, 
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: 'Price'
+                        },
+                        series: [{
+                            name: 'Averge Price',
+                            type: 'bar',
+                            data: averagePrices.map((item) => item.average.toFixed(2)), // map transforms the array then round the averge to 2 decimal places to be displayed on the chart 
+                        }]
+                    };
+                    // Display the chart with the API data
+                    myChart.setOption(options);
+                });
+        </script>
+</body>
+</html>
